@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BookStore.Areas.Identity.Data;
+using System.ComponentModel.DataAnnotations;
 
 namespace BookStore.Models
 {
@@ -9,6 +10,8 @@ namespace BookStore.Models
         [Required]
         [StringLength(450)]
         public string AppUser { get; set; }
+        public string UserId { get; set; }
+        public BookStoreUser? User { get; set; }
 
         [Required]
         [StringLength(500)]

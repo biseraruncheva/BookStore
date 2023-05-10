@@ -49,15 +49,35 @@
                 <img src="@Url.Content(@Model.FrontPage)" alt="Front Page Image" style="max-width: 200px;">
             }
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DownloadUrl)
-        </dt>
-        <dd class = "col-sm-10">
-            @if (!string.IsNullOrEmpty(Model.DownloadUrl))
-            {
-                <a href="@Model.DownloadUrl" download>Download book</a>
-            }
-        </dd>
+        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.DownloadUrl)
+            </dt>
+            <dd class="col-sm-10">
+                @if (!string.IsNullOrEmpty(Model.DownloadUrl))
+                {
+                    
+                        <a href="@Model.DownloadUrl" download>Download book</a>
+                    
+                }
+            </dd>
+        }
+        @if (User.Identity.IsAuthenticated && User.IsInRole("User"))
+        {
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.DownloadUrl)
+            </dt>
+            <dd class = "col-sm-10">
+                @if (!string.IsNullOrEmpty(Model.DownloadUrl))
+                {
+                    @if (ViewBag.HasPurchased == true)
+                    {
+                        <a href="@Model.DownloadUrl" download>Download book</a>
+                    }
+                }
+            </dd>
+        }
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Author)
         </dt>
@@ -81,18 +101,37 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+    }
+    |
     <a asp-action="Index">Back to List</a>
 </div>
-<hr/>
+@if (User.Identity.IsAuthenticated && User.IsInRole("User"))
+{
+    <form asp-action="Buy">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Buy Book" class="btn btn-primary" />
+    </form>
+}
+<br />
 <h4>Reviews</h4>
 <hr />
+
 @foreach (var item in Model.Reviews)
 {
     <div class="card">
-        <p class="card-header">@Html.DisplayFor(modelItem => item.AppUser)</p>
+        <div class="card-header">
+            <h4>
+            @Html.DisplayFor(modelItem => item.AppUser)
+        </h4>
+        <h5>Rating: @Html.DisplayFor(modelItem => item.Rating)</h5>
+         </div>
         <p class="card-body">@Html.DisplayFor(modelItem => item.Comment)</p>
     </div>
     <br>
  
 }
+</div>

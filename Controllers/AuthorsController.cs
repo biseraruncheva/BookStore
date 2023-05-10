@@ -9,6 +9,8 @@ using BookStore.Data;
 using BookStore.Models;
 using BookStore.ViewModels;
 using static System.Reflection.Metadata.BlobBuilder;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace BookStore.Controllers
 {
@@ -85,12 +87,16 @@ namespace BookStore.Controllers
         }
 
         // GET: Authors/Create
+        [Authorize(Roles = "Admin")]
+
         public IActionResult Create()
         {
             return View();
         }
 
         // POST: Authors/Create
+        [Authorize(Roles = "Admin")]
+
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -107,6 +113,8 @@ namespace BookStore.Controllers
         }
 
         // GET: Authors/Edit/5
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Author == null)
@@ -123,6 +131,8 @@ namespace BookStore.Controllers
         }
 
         // POST: Authors/Edit/5
+        [Authorize(Roles = "Admin")]
+
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -158,6 +168,8 @@ namespace BookStore.Controllers
         }
 
         // GET: Authors/Delete/5
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Author == null)
@@ -176,6 +188,8 @@ namespace BookStore.Controllers
         }
 
         // POST: Authors/Delete/5
+        [Authorize(Roles = "Admin")]
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

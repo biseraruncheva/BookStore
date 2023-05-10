@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using BookStore.Areas.Identity.Data;
 using BookStore.Models;
 
 namespace BookStore.Data
 {
-    public class BookStoreContext : DbContext
+    public class BookStoreContext : IdentityDbContext<BookStoreUser>
     {
         public BookStoreContext (DbContextOptions<BookStoreContext> options)
             : base(options)
@@ -24,8 +26,15 @@ namespace BookStore.Data
 
         public DbSet<BookStore.Models.BookGenre>? BookGenre { get; set;}
 
+        public DbSet<BookStore.Models.Review>? Review { get; set; }
+
+
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+            /*
             modelBuilder.Entity<BookGenre>()
                 .HasOne<Genre>(p => p.Genre)
                 .WithMany(p => p.Books)
@@ -54,11 +63,21 @@ namespace BookStore.Data
                 .HasOne<Book>(p => p.Book)
                 .WithMany(p => p.UserBooks)
                 .HasForeignKey(p => p.BookId)
-                .HasPrincipalKey(p => p.Id);
-           
+                .HasPrincipalKey(p => p.Id); */
+
+           /* modelBuilder.Entity<UserBooks>()
+            .HasKey(ub => new { ub.BookId, ub.AppUser });
+
+            modelBuilder.Entity<UserBooks>()
+                .HasOne(ub => ub.Book)
+                .WithMany(b => b.UserBooks)
+                .HasForeignKey(ub => ub.BookId);
+
+            modelBuilder.Entity<UserBooks>()
+                .HasOne(ub => ub.User)
+                .WithMany(u => u.UserBooks)
+                .HasForeignKey(ub => ub.AppUser);*/
 
         }
-
-        public DbSet<BookStore.Models.Review>? Review { get; set; }
     }
 }

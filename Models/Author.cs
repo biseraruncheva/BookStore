@@ -27,7 +27,7 @@ namespace BookStore.Models
         public string? Nationality { get; set; }
         [StringLength(50)]
 
-        //[RegularExpression("^(Male|Female)$", ErrorMessage = "Gender must be either male or female")]
+        [RegularExpression("^(Male|Female)$", ErrorMessage = "Gender must be either Male or Female")]
         public string? Gender { get; set; }
 
         [NotMapped]
